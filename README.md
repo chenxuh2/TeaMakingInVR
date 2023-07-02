@@ -2,11 +2,11 @@
 
 Requirement: \
 Unity version: 2021.3.0f1 \
-SteamVR \
+SteamVR 
 
 Package information: \
 Packages (HTC Corporation): \
-VIVE OpenXR Plugin -windows 1.0.10 \
+VIVE OpenXR Plugin -windows 1.0.10 
 
 Packages (Unity):\
 JetBrains Rider Editor 3.0.13\
@@ -19,10 +19,10 @@ Version Control 1.15.15\
 Visual Scripting 1.7.6\
 Visual Studio Code Editor 1.2.5\
 Visual Studio Editor 2.0.14\
-XR Plugin Management 4.3.3\
+XR Plugin Management 4.3.3
 
 Packages (Valve Corporation):\
-OpenVR XR Plugin 1.1.4\
+OpenVR XR Plugin 1.1.4
 
 Eye-tracking and face-tracking are based on the VIVE eye and facial tracking SDK: \
 https://developer.vive.com/us/support/sdk/category_howto/where-to-download-eye-tracking-runtime-and-sdk.html
