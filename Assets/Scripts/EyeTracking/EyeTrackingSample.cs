@@ -23,7 +23,7 @@ public class EyeTrackingSample : MonoBehaviour
     private Vector3 GazeDirectionCombinedLocalRight = Vector3.zero;
     public GameObject GazeDirectionVisualizationLeft, GazeDirectionVisualizationRight;
 
-
+    
     //For data collection
     private String path = "";
     public String subjectName = "Subject Name";
@@ -36,8 +36,11 @@ public class EyeTrackingSample : MonoBehaviour
     string seconds = DateTime.Now.Second.ToString();
 
     //GameObject references for data collection
-    GameObject headGO, leftHandGO, rightHandGO;
+    GameObject headGO, leftHandGO, rightHandGO, leftEyeGO, rightEyeGO, electricStove, teaKettle;
     ActionToGrabbing leftHandScript, rightHandScript;
+    ManageFillLevel mugFillLevelManager;
+    StovePlateScript stovePlateScript;
+    ManageWaterflow teaKettleScript;
 
     // Start is called before the first frame update
     void Start()
@@ -58,7 +61,7 @@ public class EyeTrackingSample : MonoBehaviour
         ShapeMap.Add(XrEyeShapeHTC.XR_EYE_EXPRESSION_RIGHT_OUT_HTC, SkinnedMeshRendererShape.Eye_Right_Right);
         ShapeMap.Add(XrEyeShapeHTC.XR_EYE_EXPRESSION_LEFT_UP_HTC, SkinnedMeshRendererShape.Eye_Left_Up);
         ShapeMap.Add(XrEyeShapeHTC.XR_EYE_EXPRESSION_RIGHT_UP_HTC, SkinnedMeshRendererShape.Eye_Right_Up);
-
+        
         //Create anchors for left and right eyes
         EyeAnchors = new GameObject[2];
         EyeAnchors[0] = new GameObject();
@@ -73,7 +76,7 @@ public class EyeTrackingSample : MonoBehaviour
         EyeAnchors[1].transform.localPosition = rightEye.transform.localPosition;
         EyeAnchors[1].transform.localRotation = rightEye.transform.localRotation;
         EyeAnchors[1].transform.localScale = rightEye.transform.localScale;
-
+        
         // Start the eye tracking detection
         facialmanager = new FacialManager();
         facialmanager.StartFramework(XrFacialTrackingTypeHTC.XR_FACIAL_TRACKING_TYPE_EYE_DEFAULT_HTC);
@@ -85,9 +88,19 @@ public class EyeTrackingSample : MonoBehaviour
         rightHandGO = GameObject.Find("RightHand");
         leftHandScript = leftHandGO.GetComponent<ActionToGrabbing>();
         rightHandScript = rightHandGO.GetComponent<ActionToGrabbing>();
+        mugFillLevelManager = GameObject.Find("FluidSimulationCylinder").GetComponent<ManageFillLevel>();
+        electricStove = GameObject.Find("StovePlate");
+        stovePlateScript = electricStove.GetComponent<StovePlateScript>();
+        teaKettle = GameObject.Find("TeaKettle");
+        teaKettleScript = teaKettle.GetComponent<ManageWaterflow>();
+
+        //Get the data from the menu for data collection
+        subjectName = StaticGameOptions.subjectName;
+        String session = StaticGameOptions.sessionNr.ToString();
+        String level = StaticGameOptions.levelSelected.ToString();
 
         //Start data tracking at 100Hz
-        path = "C:\\Users\\vhi\\Desktop\\DataTeaCooking\\" + subjectName + "_" + day + "_" + month + "_" + year + "_" + hour + "_" + minutes + "_" + seconds + ".txt";
+        path = "D:\\Projects\\Tea Cooking\\DataTeaCooking\\" + subjectName + "_" + "Session" + session + "_" + "Level" + level + "_" + day + "_" + month + "_" + year + "_" + hour + "_" + minutes + "_" + seconds + ".txt";
         InvokeRepeating("CreateText", 1.0f, 0.01f);
     }
 
@@ -114,7 +127,7 @@ public class EyeTrackingSample : MonoBehaviour
         }
 
 
-        //Update eye rotation and ey gaze direction ----------------------------------------------------------------------
+        //Update eye rotation and eye gaze direction ----------------------------------------------------------------------
         //Left eye
         GazeDirectionCombinedLocalLeft = Vector3.zero;
         if (EyeWeightings[XrEyeShapeHTC.XR_EYE_EXPRESSION_LEFT_IN_HTC] > EyeWeightings[XrEyeShapeHTC.XR_EYE_EXPRESSION_LEFT_OUT_HTC])
@@ -176,11 +189,13 @@ public class EyeTrackingSample : MonoBehaviour
         {
             //Debug.DrawRay(EyeAnchors[0].transform.position, transform.TransformDirection(GazeDirectionCombinedLocalLeft) * hit.distance, Color.yellow);
             GazeDirectionVisualizationLeft.transform.position = hit.point;
+            leftEyeGO = hit.transform.gameObject;
         }
         else
         {
-            Debug.DrawRay(EyeAnchors[0].transform.position, transform.TransformDirection(GazeDirectionCombinedLocalLeft) * 1000, Color.white);
+            //Debug.DrawRay(EyeAnchors[0].transform.position, transform.TransformDirection(GazeDirectionCombinedLocalLeft) * 1000, Color.white);
             GazeDirectionVisualizationLeft.transform.position = Vector3.down * 100;
+            leftEyeGO = null;
         }
 
         // Does the ray intersect any objects excluding the player layer, right eye ------------------------------------------------------------------
@@ -188,11 +203,13 @@ public class EyeTrackingSample : MonoBehaviour
         {
             //Debug.DrawRay(EyeAnchors[0].transform.position, transform.TransformDirection(GazeDirectionCombinedLocalLeft) * hit.distance, Color.yellow);
             GazeDirectionVisualizationRight.transform.position = hit.point;
+            rightEyeGO = hit.transform.gameObject;
         }
         else
         {
             //Debug.DrawRay(EyeAnchors[0].transform.position, transform.TransformDirection(GazeDirectionCombinedLocalLeft) * 1000, Color.white);
             GazeDirectionVisualizationRight.transform.position = Vector3.down * 100;
+            rightEyeGO = null;
         }
     }
 
@@ -217,6 +234,7 @@ public class EyeTrackingSample : MonoBehaviour
                                     "RightEyeGazeDirectionLocalX; RightEyeGazeDirectionLocalY; RightEyeGazeDirectionLocalZ;" +
                                     "LeftEyeGazePositionX; LeftEyeGazePositionY; LeftEyeGazePositionZ; " +
                                     "RightEyeGazePositionX; RightEyeGazePositionY; RightEyeGazePositionZ; " +
+                                    "FocusedObjectLefttEye; FocusedObjectRightEye;" +
                                     "PositionLeftEyeX; PositionLeftEyeY; PositionLeftEyeZ; " +
                                     "PositionRightEyeX; PositionRightEyeY; PositionRightEyeZ; " +
                                     "HeadRotationAroundX; HeadRotationAroundY; HeadRotationAroundZ; " +
@@ -227,7 +245,9 @@ public class EyeTrackingSample : MonoBehaviour
                                     "IsAnObjectGrabbedLeft; IsAnObjectGrabbedRight; GrabbedObjectNameLeft; GrabbedObjectNameRight; " +
                                     "LeftGrabbedObjectPositionX; LeftGrabbedObjectPositionY; LeftGrabbedObjectPositionZ; " +
                                     "RightGrabbedObjectPositionX; RightGrabbedObjectPositionY; RightGrabbedObjectPositionZ; " +
-                                    "\n");
+                                    "StoveStatus; WaterIsCooking; " +
+                                    "TeaBagInMug; IsWaterInCup ;TeaIsBrewing; TeaIsDone; " +
+                                    "\n");;
 
         }
 
@@ -250,6 +270,7 @@ public class EyeTrackingSample : MonoBehaviour
             GazeDirectionCombinedLocalRight.x.ToString() + "; " + GazeDirectionCombinedLocalRight.y.ToString() + "; " + GazeDirectionCombinedLocalRight.z.ToString() + "; " +
             GazeDirectionVisualizationLeft.transform.position.x.ToString() + "; " + GazeDirectionVisualizationLeft.transform.position.y.ToString() + "; " + GazeDirectionVisualizationLeft.transform.position.z.ToString() + "; " +
             GazeDirectionVisualizationRight.transform.position.x.ToString() + "; " + GazeDirectionVisualizationRight.transform.position.y.ToString() + "; " + GazeDirectionVisualizationRight.transform.position.z.ToString() + "; " +
+            getNameOfGameObject(leftEyeGO) + "; " + getNameOfGameObject(rightEyeGO) + "; " + 
             EyeAnchors[0].transform.position.x.ToString() + "; " + EyeAnchors[0].transform.position.y.ToString() + "; " + EyeAnchors[0].transform.position.z.ToString() + "; " +
             EyeAnchors[1].transform.position.x.ToString() + "; " + EyeAnchors[1].transform.position.y.ToString() + "; " + EyeAnchors[1].transform.position.z.ToString() + "; " +
             headGO.transform.rotation.x.ToString() + "; " + headGO.transform.rotation.y.ToString() + "; " + headGO.transform.rotation.z.ToString() + "; " +
@@ -259,9 +280,67 @@ public class EyeTrackingSample : MonoBehaviour
             rightHandGO.transform.rotation.x.ToString() + "; " + rightHandGO.transform.rotation.y.ToString() + "; " + rightHandGO.transform.rotation.z.ToString() + "; " +
             leftHandScript.getIsAnObjectGrabbed().ToString() + "; " + rightHandScript.getIsAnObjectGrabbed().ToString() + "; " + leftHandScript.getObjectGrabbedName() + "; " + rightHandScript.getObjectGrabbedName() + "; " +
             leftHandScript.getPositionOfGrabbedObject() + "; " +
-            rightHandScript.getPositionOfGrabbedObject()
+            rightHandScript.getPositionOfGrabbedObject() + "; " +
+            getStoveStatusString() + "; " + teaKettleScript.getIsWaterCooking().ToString() + "; " +
+            mugFillLevelManager.getTeaBagInMug().ToString() + "; " + mugFillLevelManager.getWaterInMug().ToString() + "; " + mugFillLevelManager.getTeaIsBrewing().ToString() + "; " + mugFillLevelManager.getTeaIsDone().ToString()
             );
+
         writer.Close();
 
+    }
+
+
+    public string getNameOfGameObject(GameObject obj)
+    {
+        if(obj != null)
+        {
+            return obj.name;
+        } else {
+            return "NO OBJECT";
+        }
+    }
+
+    //Returns the status of the stove: 0 - cold (and off); 1- heating; 2 - hot, 3 - cooling down
+    private int getStoveStatus()
+    {
+        //The stove is heated up and on
+        if(stovePlateScript.getIsPlateHot())
+        {
+            return 2;   //the plate is hot
+        } else if (stovePlateScript.getIsStoveActive())
+        {
+            return 1;   //The stove is not hot yet, but active
+        }
+        else
+        {
+            if(stovePlateScript.getPlateTemperature() > 0)
+            {
+                return 3;       // it's not hot or active, but has soe temperature -> it's cooling down
+            }
+            
+            return 0;   //neither is the stove hot, nor activated -> it is off
+        }
+    }
+
+    private string getStoveStatusString()
+    {
+        //The stove is heated up and on
+        if (stovePlateScript.getIsPlateHot())
+        {
+            return "Hot";   //the plate is hot
+        }
+        else if (stovePlateScript.getIsStoveActive())
+        {
+            return "Heating";   //The stove is not hot yet, but active
+        }
+        else
+        {
+            if (stovePlateScript.getPlateTemperature() > 0)
+            {
+                return "Cooling";       // it's not hot or active, but has soe temperature -> it's cooling down
+            }
+
+            return "Deactivated";   //neither is the stove hot, nor activated -> it is off
+        }
     }
 }

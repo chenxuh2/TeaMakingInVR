@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83c497f94dca8f442b93bafe87fe9590, type: 3}
   m_Name: HtcViveFocus3InputFeature Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 1
+  m_enabled: 0
   nameUi: HTC Vive Focus3 Controller Support
   version: 0.0.2
   featureIdInternal: com.htc.openxr.feature.input.htcvivefocus3
@@ -179,7 +179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fbc139556062114b840c0209eebde8d, type: 3}
   m_Name: HandTracking_OpenXR_API Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 1
+  m_enabled: 0
   nameUi: Hand Tracking
   version: 0.0.1
   featureIdInternal: com.company.openxr.handtracking.feature
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3cf79659a011bd419c7a2a30eb74e9a, type: 3}
   m_Name: EyeGazeInteraction Standalone
   m_EditorClassIdentifier: 
-  m_enabled: 0
+  m_enabled: 1
   nameUi: Eye Gaze Interaction Profile
   version: 0.0.1
   featureIdInternal: com.unity.openxr.feature.input.eyetracking
@@ -353,6 +353,6 @@ MonoBehaviour:
   company: HTC
   priority: 0
   required: 0
-  m_XrInstance: 0
-  m_XrSession: 0
-  m_systemid: 0
+  m_XrInstance: 1926832346400
+  m_XrSession: 1938674831920
+  m_systemid: 1152963526566871633

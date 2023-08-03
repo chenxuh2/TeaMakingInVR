@@ -5,8 +5,14 @@ namespace UnityEngine.XR.OpenXR.Samples.ControllerSample
 {
     public class ActionToGrabbing : MonoBehaviour
     {
-        public InputActionReference action;
         public GameObject EnviromentGO;
+
+        public InputActionReference action;
+        public InputActionReference hapticAction;
+        public float _amplitude = 1.0f;
+        public float _duration = 0.1f;
+        public float _frequency = 0.0f;
+        
 
         private GameObject objectToGrab, grabbedObject;
         private bool isObjectToGrabInReach = false;
@@ -18,17 +24,24 @@ namespace UnityEngine.XR.OpenXR.Samples.ControllerSample
                 return;
 
             action.action.Enable();
+            hapticAction.action.Enable();
+
             action.action.performed += (ctx) =>
             {
                 var control = action.action.activeControl;
                 if (null == control)
                     return;
+
                 
+
                 //this.gameObject.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
 
                 //GRabbing of the object
-                if(isObjectToGrabInReach && objectToGrab != null && !objectIsGrabbed)
+                if (isObjectToGrabInReach && objectToGrab != null && !objectIsGrabbed)
                 {
+                    //Do a haptic feedback
+                    OpenXRInput.SendHapticImpulse(hapticAction.action, _amplitude, _frequency, _duration, control.device);
+
                     //grab the object
                     objectToGrab.transform.parent.SetParent(this.gameObject.transform);
                     grabbedObject = objectToGrab.transform.parent.gameObject;
@@ -37,6 +50,9 @@ namespace UnityEngine.XR.OpenXR.Samples.ControllerSample
 
                     //Deactivate the gravity and other movement while the object is grabbed
                     grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
+
+                    //Activate haptic feedback for this hand if the grabbed object touches something
+                    grabbedObject.GetComponent<GenerateHapticFeedbackOnCollision>().setGrabbed(this);
                     
                 }
             };
@@ -110,5 +126,16 @@ namespace UnityEngine.XR.OpenXR.Samples.ControllerSample
                 return "No; object; grabbed";
             }
         }
+
+        public void generateHapticFeedback(float amplitude = 1f, float freq = 0.0f, float duration = 0.1f)
+        {
+            var control = action.action.activeControl;
+            if (null == control)
+                return;
+
+            OpenXRInput.SendHapticImpulse(hapticAction.action, amplitude, freq, duration, control.device);
+        }
+
+
     }
 }

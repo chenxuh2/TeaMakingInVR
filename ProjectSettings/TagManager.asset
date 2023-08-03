@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Liftable
+  - FluidAffectedByTeaBag
+  - StovePlate
   layers:
   - Default
   - TransparentFX
@@ -12,13 +14,13 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Environment
+  - Fluids
+  - Liftable
+  - EnvironmentNoFluid
+  - FluidOnly
+  - EnvironmentExceptLayer9
+  - Fluids2
   - 
   - 
   - 
