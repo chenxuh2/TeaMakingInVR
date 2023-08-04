@@ -7,6 +7,7 @@ TagManager:
   - Liftable
   - FluidAffectedByTeaBag
   - StovePlate
+  - Sugar
   layers:
   - Default
   - TransparentFX

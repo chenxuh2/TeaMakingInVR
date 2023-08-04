@@ -23,7 +23,7 @@ public class sugarSpoonScript : MonoBehaviour
         //remove the sugar, if the spoon is rotated too much
         float rotationAroundX = this.transform.parent.transform.rotation.eulerAngles.x % 360;
         float rotationAroundZ = this.transform.parent.transform.rotation.eulerAngles.z % 360;
-        if ((rotationAroundX > 120 && rotationAroundX < 240) || (rotationAroundZ > 120 && rotationAroundZ < 240))
+        if (sugarOnSpoon && ((rotationAroundX > 0 && rotationAroundX < 270) || (rotationAroundZ > 110 && rotationAroundZ < 290)))
         {
             removeSugarFromSpoon();
         }
@@ -33,7 +33,22 @@ public class sugarSpoonScript : MonoBehaviour
     {
         if(other.gameObject.CompareTag("FluidAffectedByTeaBag"))
         {
+            removeSugarFromSpoon();
 
+            //Tell the tea there is sugar now
+            other.gameObject.GetComponent<ManageFillLevel>().setSugarAdded(true);
+        }
+
+        if(other.gameObject.CompareTag("Sugar"))
+        {
+            //if(rotations are not the one to lose the sugar immediately)
+            float rotationAroundX = this.transform.parent.transform.rotation.eulerAngles.x % 360;
+            float rotationAroundZ = this.transform.parent.transform.rotation.eulerAngles.z % 360;
+            if (!sugarOnSpoon && !((rotationAroundX > 0 && rotationAroundX < 270) || (rotationAroundZ > 110 && rotationAroundZ < 290)))
+            {
+                putSugarOnSpoon(); 
+            }
+            
         }
     }
 
@@ -51,5 +66,11 @@ public class sugarSpoonScript : MonoBehaviour
         thisRenderer.enabled = false;
 
         //spawn some particles
+        sugarParticleSystem.Play();
+    }
+
+    public bool getIsSugarOnSpoon()
+    {
+        return sugarOnSpoon;
     }
 }

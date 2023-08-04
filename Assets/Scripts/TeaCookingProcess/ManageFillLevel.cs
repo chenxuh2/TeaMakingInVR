@@ -23,6 +23,9 @@ public class ManageFillLevel : MonoBehaviour
     [SerializeField] GameObject steamParticleSystemObject;
     ParticleSystem steamParticleSystem;
 
+    //Sugar info
+    bool sugarAdded = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -125,6 +128,8 @@ public class ManageFillLevel : MonoBehaviour
         {
             steamParticleSystem.Stop();
         }
+
+        setSugarAdded(false);
     }
 
     private void startFillingMug()
@@ -182,5 +187,15 @@ public class ManageFillLevel : MonoBehaviour
         {
             teaIsBrewing = false;
         }
+    }
+
+    public void setSugarAdded(bool val)
+    {
+        sugarAdded = val;
+    }
+
+    public bool getSugarAdded()
+    {
+        return sugarAdded;
     }
 }

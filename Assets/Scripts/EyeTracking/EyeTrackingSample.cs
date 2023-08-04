@@ -36,11 +36,12 @@ public class EyeTrackingSample : MonoBehaviour
     string seconds = DateTime.Now.Second.ToString();
 
     //GameObject references for data collection
-    GameObject headGO, leftHandGO, rightHandGO, leftEyeGO, rightEyeGO, electricStove, teaKettle;
+    GameObject headGO, leftHandGO, rightHandGO, leftEyeGO, rightEyeGO, electricStove, teaKettle, sugarHeapOnSpoon;
     ActionToGrabbing leftHandScript, rightHandScript;
     ManageFillLevel mugFillLevelManager;
     StovePlateScript stovePlateScript;
     ManageWaterflow teaKettleScript;
+    sugarSpoonScript sugarOnSpoonScript;
 
     // Start is called before the first frame update
     void Start()
@@ -93,6 +94,8 @@ public class EyeTrackingSample : MonoBehaviour
         stovePlateScript = electricStove.GetComponent<StovePlateScript>();
         teaKettle = GameObject.Find("TeaKettle");
         teaKettleScript = teaKettle.GetComponent<ManageWaterflow>();
+        sugarHeapOnSpoon = GameObject.Find("SugarHeap");
+        sugarOnSpoonScript = sugarHeapOnSpoon.GetComponent<sugarSpoonScript>();
 
         //Get the data from the menu for data collection
         subjectName = StaticGameOptions.subjectName;
@@ -247,6 +250,7 @@ public class EyeTrackingSample : MonoBehaviour
                                     "RightGrabbedObjectPositionX; RightGrabbedObjectPositionY; RightGrabbedObjectPositionZ; " +
                                     "StoveStatus; WaterIsCooking; " +
                                     "TeaBagInMug; IsWaterInCup ;TeaIsBrewing; TeaIsDone; " +
+                                    "SugarOnSpoon; SugarInCup " +
                                     "\n");;
 
         }
@@ -282,7 +286,8 @@ public class EyeTrackingSample : MonoBehaviour
             leftHandScript.getPositionOfGrabbedObject() + "; " +
             rightHandScript.getPositionOfGrabbedObject() + "; " +
             getStoveStatusString() + "; " + teaKettleScript.getIsWaterCooking().ToString() + "; " +
-            mugFillLevelManager.getTeaBagInMug().ToString() + "; " + mugFillLevelManager.getWaterInMug().ToString() + "; " + mugFillLevelManager.getTeaIsBrewing().ToString() + "; " + mugFillLevelManager.getTeaIsDone().ToString()
+            mugFillLevelManager.getTeaBagInMug().ToString() + "; " + mugFillLevelManager.getWaterInMug().ToString() + "; " + mugFillLevelManager.getTeaIsBrewing().ToString() + "; " + mugFillLevelManager.getTeaIsDone().ToString() + "; " +
+            sugarOnSpoonScript.getIsSugarOnSpoon().ToString() + "; " + mugFillLevelManager.getSugarAdded().ToString()
             );
 
         writer.Close();
