@@ -20,13 +20,13 @@ public class sugarSpoonScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //remove the sugar, if the spoon is rotated too much
-        float rotationAroundX = this.transform.parent.transform.rotation.eulerAngles.x % 360;
+        //remove the sugar, if the spoon is rotated too much (kinda buggy since I don't know the rotation of the spoon-mesh)
+        /*float rotationAroundX = this.transform.parent.transform.rotation.eulerAngles.x % 360;
         float rotationAroundZ = this.transform.parent.transform.rotation.eulerAngles.z % 360;
         if (sugarOnSpoon && ((rotationAroundX > 0 && rotationAroundX < 270) || (rotationAroundZ > 110 && rotationAroundZ < 290)))
         {
             removeSugarFromSpoon();
-        }
+        }*/
     }
 
     private void OnTriggerEnter(Collider other)

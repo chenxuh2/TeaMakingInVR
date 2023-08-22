@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour
     private string subjectName;
 
     //max number of levels and the currently selected one
-    int maxLevel = 2;
+    int maxLevel = 6;
     private int selectedLevel;
 
     //selected session
@@ -68,7 +68,16 @@ public class MainMenu : MonoBehaviour
 
         if(subjectName != "")
         {
-            SceneManager.LoadScene(0);
+            if(selectedLevel == 0)
+            {
+                SceneManager.LoadScene(0);
+            }
+
+            if(selectedLevel >= 1)
+            {
+                SceneManager.LoadScene(selectedLevel + 1);
+            }
+            
         }
     }
 

@@ -36,12 +36,16 @@ public class EyeTrackingSample : MonoBehaviour
     string seconds = DateTime.Now.Second.ToString();
 
     //GameObject references for data collection
-    GameObject headGO, leftHandGO, rightHandGO, leftEyeGO, rightEyeGO, electricStove, teaKettle, sugarHeapOnSpoon;
+    GameObject headGO, leftHandGO, rightHandGO, leftEyeGO, rightEyeGO, leftEyeSphereGO, rightEyeSphereGO, electricStove, teaKettle, sugarHeapOnSpoon;
     ActionToGrabbing leftHandScript, rightHandScript;
     ManageFillLevel mugFillLevelManager;
     StovePlateScript stovePlateScript;
     ManageWaterflow teaKettleScript;
     sugarSpoonScript sugarOnSpoonScript;
+
+    //For sphere cast
+    private float sphereCastRadius = 0.07f;
+    private Vector3 positionLeftSphereCollision, positionRightSphereCollision = Vector3.down * 100;
 
     // Start is called before the first frame update
     void Start()
@@ -186,6 +190,8 @@ public class EyeTrackingSample : MonoBehaviour
         // But instead we want to collide against everything except layer 3. The ~ operator does this, it inverts a bitmask.
         layerMask = ~layerMask;
 
+
+        //DO A RAYCAST--------------------------------------------------------------------
         RaycastHit hit;
         // Does the ray intersect any objects excluding the player layer, left eye
         if (Physics.Raycast(EyeAnchors[0].transform.position, transform.TransformDirection(GazeDirectionCombinedLocalLeft), out hit, 100, layerMask))
@@ -214,6 +220,33 @@ public class EyeTrackingSample : MonoBehaviour
             GazeDirectionVisualizationRight.transform.position = Vector3.down * 100;
             rightEyeGO = null;
         }
+
+        //DO A SPHERECAST-----------------------------------------------------------------------------------
+        // Does the sphere intersect any objects excluding the player layer, left eye
+        if (Physics.SphereCast(EyeAnchors[0].transform.position, sphereCastRadius, transform.TransformDirection(GazeDirectionCombinedLocalLeft), out hit, 100, layerMask))
+        {
+            positionLeftSphereCollision = hit.point;
+            leftEyeSphereGO = hit.transform.gameObject;
+        }
+        else
+        {
+            positionLeftSphereCollision = Vector3.down * 100;
+            leftEyeSphereGO = null;
+        }
+        //Debug.Log(getNameOfGameObject(leftEyeSphereGO));
+
+        // Does the ray intersect any objects excluding the player layer, right eye ------------------------------------------------------------------
+        if (Physics.SphereCast(EyeAnchors[1].transform.position, sphereCastRadius, transform.TransformDirection(GazeDirectionCombinedLocalRight), out hit, 100, layerMask))
+        {
+            positionRightSphereCollision = hit.point;
+            rightEyeSphereGO = hit.transform.gameObject;
+        }
+        else
+        {
+            positionRightSphereCollision = Vector3.down * 100;
+            rightEyeSphereGO = null;
+        }
+        //Debug.Log(getNameOfGameObject(rightEyeSphereGO));
     }
 
     //This function is called, when the according GameObject is destroyed
@@ -237,7 +270,10 @@ public class EyeTrackingSample : MonoBehaviour
                                     "RightEyeGazeDirectionLocalX; RightEyeGazeDirectionLocalY; RightEyeGazeDirectionLocalZ;" +
                                     "LeftEyeGazePositionX; LeftEyeGazePositionY; LeftEyeGazePositionZ; " +
                                     "RightEyeGazePositionX; RightEyeGazePositionY; RightEyeGazePositionZ; " +
-                                    "FocusedObjectLefttEye; FocusedObjectRightEye;" +
+                                    "FocusedObjectLeftEye; FocusedObjectRightEye;" +
+                                    "FocusedObjectLeftEyeSphereCast; FocusedObjectRightEyeSphereCast;" +
+                                    "LeftEyeGazePositionXSphere; LeftEyeGazePositionYSphere; LeftEyeGazePositionZSphere; " +
+                                    "RightEyeGazePositionXSphere; RightEyeGazePositionYSphere; RightEyeGazePositionZSphere; " +
                                     "PositionLeftEyeX; PositionLeftEyeY; PositionLeftEyeZ; " +
                                     "PositionRightEyeX; PositionRightEyeY; PositionRightEyeZ; " +
                                     "HeadRotationAroundX; HeadRotationAroundY; HeadRotationAroundZ; " +
@@ -274,7 +310,10 @@ public class EyeTrackingSample : MonoBehaviour
             GazeDirectionCombinedLocalRight.x.ToString() + "; " + GazeDirectionCombinedLocalRight.y.ToString() + "; " + GazeDirectionCombinedLocalRight.z.ToString() + "; " +
             GazeDirectionVisualizationLeft.transform.position.x.ToString() + "; " + GazeDirectionVisualizationLeft.transform.position.y.ToString() + "; " + GazeDirectionVisualizationLeft.transform.position.z.ToString() + "; " +
             GazeDirectionVisualizationRight.transform.position.x.ToString() + "; " + GazeDirectionVisualizationRight.transform.position.y.ToString() + "; " + GazeDirectionVisualizationRight.transform.position.z.ToString() + "; " +
-            getNameOfGameObject(leftEyeGO) + "; " + getNameOfGameObject(rightEyeGO) + "; " + 
+            getNameOfGameObject(leftEyeGO) + "; " + getNameOfGameObject(rightEyeGO) + "; " +
+            getNameOfGameObject(leftEyeSphereGO) + "; " + getNameOfGameObject(rightEyeSphereGO) + "; " +
+            positionLeftSphereCollision.x.ToString() + "; " + positionLeftSphereCollision.y.ToString() + "; " + positionLeftSphereCollision.z.ToString() + "; " +
+            positionRightSphereCollision.x.ToString() + "; " + positionRightSphereCollision.y.ToString() + "; " + positionRightSphereCollision.z.ToString() + "; " +
             EyeAnchors[0].transform.position.x.ToString() + "; " + EyeAnchors[0].transform.position.y.ToString() + "; " + EyeAnchors[0].transform.position.z.ToString() + "; " +
             EyeAnchors[1].transform.position.x.ToString() + "; " + EyeAnchors[1].transform.position.y.ToString() + "; " + EyeAnchors[1].transform.position.z.ToString() + "; " +
             headGO.transform.rotation.x.ToString() + "; " + headGO.transform.rotation.y.ToString() + "; " + headGO.transform.rotation.z.ToString() + "; " +
