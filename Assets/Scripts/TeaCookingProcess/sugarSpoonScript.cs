@@ -31,7 +31,7 @@ public class sugarSpoonScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("FluidAffectedByTeaBag"))
+        if(sugarOnSpoon && other.gameObject.CompareTag("FluidAffectedByTeaBag"))
         {
             removeSugarFromSpoon();
 
@@ -42,12 +42,12 @@ public class sugarSpoonScript : MonoBehaviour
         if(other.gameObject.CompareTag("Sugar"))
         {
             //if(rotations are not the one to lose the sugar immediately)
-            float rotationAroundX = this.transform.parent.transform.rotation.eulerAngles.x % 360;
-            float rotationAroundZ = this.transform.parent.transform.rotation.eulerAngles.z % 360;
-            if (!sugarOnSpoon && !((rotationAroundX > 0 && rotationAroundX < 270) || (rotationAroundZ > 110 && rotationAroundZ < 290)))
-            {
+            //float rotationAroundX = this.transform.parent.transform.rotation.eulerAngles.x % 360;
+            //float rotationAroundZ = this.transform.parent.transform.rotation.eulerAngles.z % 360;
+            //if (!sugarOnSpoon && !((rotationAroundX > 0 && rotationAroundX < 270) || (rotationAroundZ > 110 && rotationAroundZ < 290)))
+            //{
                 putSugarOnSpoon(); 
-            }
+            //}
             
         }
     }

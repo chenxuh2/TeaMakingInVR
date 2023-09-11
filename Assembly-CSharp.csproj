@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\TeaCookingProcess\ManageFillLevel.cs" />
     <Compile Include="Assets\Scripts\TaskSystem\TaskManagingSystem.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Lip\SRanipal_Lip_v2.cs" />
+    <Compile Include="Assets\Scripts\StartAndStopFacialFramework.cs" />
     <Compile Include="Assets\Scripts\Menu\StaticGameOptions.cs" />
     <Compile Include="Assets\Scripts\LevelLoad\StaticLevelManager.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\Sample\SRanipal_GazeRaySample.cs" />
