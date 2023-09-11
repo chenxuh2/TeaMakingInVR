@@ -7,6 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 using VIVE;
 using UnityEngine.XR.OpenXR.Samples.ControllerSample;
+using UnityEngine.SceneManagement;
 
 public class EyeTrackingSample : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class EyeTrackingSample : MonoBehaviour
     StovePlateScript stovePlateScript;
     ManageWaterflow teaKettleScript;
     sugarSpoonScript sugarOnSpoonScript;
+    ManageLevelLoad levelManager;
 
     //For sphere cast
     private float sphereCastRadius = 0.07f;
@@ -100,14 +102,17 @@ public class EyeTrackingSample : MonoBehaviour
         teaKettleScript = teaKettle.GetComponent<ManageWaterflow>();
         sugarHeapOnSpoon = GameObject.Find("SugarHeap");
         sugarOnSpoonScript = sugarHeapOnSpoon.GetComponent<sugarSpoonScript>();
+        levelManager = GameObject.Find("LevelManager").GetComponent<ManageLevelLoad>();
 
         //Get the data from the menu for data collection
         subjectName = StaticGameOptions.subjectName;
         String session = StaticGameOptions.sessionNr.ToString();
-        String level = StaticGameOptions.levelSelected.ToString();
+        //String level = StaticGameOptions.levelSelected.ToString();
+        String level = SceneManager.GetActiveScene().name;
+        String error = levelManager.getCurrentErrorName();
 
         //Start data tracking at 100Hz
-        path = "D:\\Projects\\Tea Cooking\\DataTeaCooking\\" + subjectName + "_" + "Session" + session + "_" + "Level" + level + "_" + day + "_" + month + "_" + year + "_" + hour + "_" + minutes + "_" + seconds + ".txt";
+        path = "D:\\Projects\\Tea Cooking\\DataTeaCooking\\" + subjectName + "_" + "Session" + session + "_" + "Level" + level + "_" + "Error" + error + "_" + day + "_" + month + "_" + year + "_" + hour + "_" + minutes + "_" + seconds + ".txt";
         InvokeRepeating("CreateText", 1.0f, 0.01f);
     }
 
@@ -284,6 +289,7 @@ public class EyeTrackingSample : MonoBehaviour
                                     "IsAnObjectGrabbedLeft; IsAnObjectGrabbedRight; GrabbedObjectNameLeft; GrabbedObjectNameRight; " +
                                     "LeftGrabbedObjectPositionX; LeftGrabbedObjectPositionY; LeftGrabbedObjectPositionZ; " +
                                     "RightGrabbedObjectPositionX; RightGrabbedObjectPositionY; RightGrabbedObjectPositionZ; " +
+                                    "LefthandTouchesStovePlate; RightHandTouchesStovePlate" +
                                     "StoveStatus; WaterIsCooking; " +
                                     "TeaBagInMug; IsWaterInCup ;TeaIsBrewing; TeaIsDone; " +
                                     "SugarOnSpoon; SugarInCup " +
@@ -324,6 +330,7 @@ public class EyeTrackingSample : MonoBehaviour
             leftHandScript.getIsAnObjectGrabbed().ToString() + "; " + rightHandScript.getIsAnObjectGrabbed().ToString() + "; " + leftHandScript.getObjectGrabbedName() + "; " + rightHandScript.getObjectGrabbedName() + "; " +
             leftHandScript.getPositionOfGrabbedObject() + "; " +
             rightHandScript.getPositionOfGrabbedObject() + "; " +
+            leftHandScript.getHandTouchesStove() + "; " + rightHandScript.getHandTouchesStove() + "; " +
             getStoveStatusString() + "; " + teaKettleScript.getIsWaterCooking().ToString() + "; " +
             mugFillLevelManager.getTeaBagInMug().ToString() + "; " + mugFillLevelManager.getWaterInMug().ToString() + "; " + mugFillLevelManager.getTeaIsBrewing().ToString() + "; " + mugFillLevelManager.getTeaIsDone().ToString() + "; " +
             sugarOnSpoonScript.getIsSugarOnSpoon().ToString() + "; " + mugFillLevelManager.getSugarAdded().ToString()

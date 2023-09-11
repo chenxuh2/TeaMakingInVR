@@ -97,7 +97,7 @@ public class TeaBagScript : MonoBehaviour
 
                 //IF the tea bag is lifted out of the mug
                 //activateMugFollowing = false;
-                Debug.Log("Leave");
+                //Debug.Log("Leave");
                 isInMug = false;
             } catch
             {

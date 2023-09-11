@@ -17,6 +17,7 @@ namespace UnityEngine.XR.OpenXR.Samples.ControllerSample
         private GameObject objectToGrab, grabbedObject;
         private bool isObjectToGrabInReach = false;
         private bool objectIsGrabbed = false;
+        private bool handTouchesPlate = false;
 
         private void Start()
         {
@@ -88,6 +89,12 @@ namespace UnityEngine.XR.OpenXR.Samples.ControllerSample
                 objectToGrab = other.gameObject;
                 isObjectToGrabInReach = true;
             }
+
+            if (other.gameObject.CompareTag("StovePlate"))
+            {
+                    handTouchesPlate = true;
+                    other.gameObject.GetComponent<StovePlateScript>().setWaterKettle(this.gameObject);               
+            }
         }
 
         public void OnTriggerExit(Collider other)
@@ -97,7 +104,18 @@ namespace UnityEngine.XR.OpenXR.Samples.ControllerSample
                 isObjectToGrabInReach = false;
                 objectToGrab = null;
             }
+
+            if (other.gameObject.CompareTag("StovePlate"))
+            {
+                handTouchesPlate = false;
+            }
         }
+
+        public bool getHandTouchesStove()
+        {
+            return handTouchesPlate;
+        }
+
 
         public bool getIsAnObjectGrabbed()
         {
@@ -136,6 +154,11 @@ namespace UnityEngine.XR.OpenXR.Samples.ControllerSample
             OpenXRInput.SendHapticImpulse(hapticAction.action, amplitude, freq, duration, control.device);
         }
 
+        private void OnDisable()
+        {
+            action.action.Disable();
+            hapticAction.action.Disable();
+        }
 
     }
 }

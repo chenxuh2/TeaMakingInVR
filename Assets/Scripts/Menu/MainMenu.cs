@@ -19,6 +19,9 @@ public class MainMenu : MonoBehaviour
     //Name input
     TMP_InputField nameInput;
 
+    //Number of trials
+    public int numberOfTrials;
+
     //Data--------------------------------------------------------------------
     //The name of the scene that should start -> Load level now is managed via the build index of the scene
     //private string levelToStart = "Sample Scene";
@@ -27,13 +30,12 @@ public class MainMenu : MonoBehaviour
     private string subjectName;
 
     //max number of levels and the currently selected one
-    int maxLevel = 6;
+    int maxLevel = 2;
     private int selectedLevel;
 
     //selected session
     int currentSession;
 
-    
 
 
 
@@ -45,12 +47,14 @@ public class MainMenu : MonoBehaviour
         nameInput = GameObject.Find("SubjectNameInput").GetComponent<TMP_InputField>();
         subjectName = StaticGameOptions.subjectName;
         nameInput.text = subjectName;
+        numberOfTrials = StaticGameOptions.numberOfTrials;
 
 
         selectedLevel = StaticGameOptions.levelSelected;
         updateLevelLabel();
         currentSession = StaticGameOptions.sessionNr;
         sessionLabel.text = currentSession.ToString();
+
     }
 
     // Update is called once per frame
@@ -59,16 +63,22 @@ public class MainMenu : MonoBehaviour
         
     }
 
+    //Chenge Scene ---------------------------------------------------------
     public void StartGame()
     {
         //set the information/options for the game in the static class
         StaticGameOptions.subjectName = subjectName;
         StaticGameOptions.sessionNr = currentSession;
         StaticGameOptions.levelSelected = selectedLevel;
+        StaticGameOptions.numberOfTrials = numberOfTrials;
 
-        if(subjectName != "")
+        //Create the order of the levels played
+        StaticLevelManager.createSimpleLevelList(numberOfTrials);
+        StaticLevelManager.createComplexLevelList(numberOfTrials);
+
+        if (subjectName != "")
         {
-            if(selectedLevel == 0)
+            /*if(selectedLevel == 0)
             {
                 SceneManager.LoadScene(0);
             }
@@ -76,9 +86,34 @@ public class MainMenu : MonoBehaviour
             if(selectedLevel >= 1)
             {
                 SceneManager.LoadScene(selectedLevel + 1);
+            }*/
+            if (selectedLevel == 0)
+            {
+                SceneManager.LoadScene(0);
+            }
+            else if (selectedLevel == 1)
+            {
+                SceneManager.LoadScene((StaticLevelManager.getNextSimpleLevel() % 2) + 2);
+            }
+            else
+            {
+                SceneManager.LoadScene((StaticLevelManager.getNextComplexLevel() % 2) + 4);
             }
             
         }
+    }
+
+
+    public void ShowQuestionnaires()
+    {
+        try
+        {
+            SceneManager.LoadScene(7);
+        } catch
+        {
+            Debug.Log("Problem when loading Questionnaire-Scene");
+        }
+            
     }
 
     //Level selection functions --------------------------------------------
@@ -98,7 +133,23 @@ public class MainMenu : MonoBehaviour
 
     private void updateLevelLabel()
     {
-        levelLabel.text = (selectedLevel + 1).ToString();
+        //levelLabel.text = (selectedLevel + 1).ToString();
+        if(selectedLevel == 0)
+        {
+            levelLabel.text = "Familiarization";
+        }
+        else if(selectedLevel == 1)
+        {
+            levelLabel.text = "Simple";
+        }
+        else if (selectedLevel == 2)
+        {
+            levelLabel.text = "Complex";
+        } else
+        {
+            levelLabel.text = "Default";
+        }
+
     }
 
     //Session selection functions --------------------------------------------

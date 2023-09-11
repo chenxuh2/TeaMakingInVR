@@ -58,18 +58,22 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Grabbing\MyActionScript.cs" />
     <Compile Include="Assets\Scripts\TeaCookingProcess\StovePlateScript.cs" />
-    <Compile Include="Assets\Scripts\TaskScriptableObject.cs" />
+    <Compile Include="Assets\Scripts\TaskSystem\TaskScriptableObject.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Lip\SRanipal_LipShapeTableDrawer.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\SRanipal_EyeDataType_v1.cs" />
+    <Compile Include="Assets\Scripts\LevelLoad\ManageLevelLoad.cs" />
+    <Compile Include="Assets\Scripts\Questionnaires\ManageQuestionnaires.cs" />
     <Compile Include="Assets\ViveSR\Scripts\SRanipal_Enums.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Lip\Sample\SRanipal_AvatarLipSample.cs" />
     <Compile Include="Assets\ViveSR\Scripts\SRanipal_API.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\SRanipal_Eye_Enums.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\Sample\DartBoard.cs" />
+    <Compile Include="Assets\Scripts\ErrorTaskScriptable.cs" />
     <Compile Include="Assets\Scripts\TeaCookingProcess\ManageFillLevel.cs" />
-    <Compile Include="Assets\Scripts\TaskManagingSystem.cs" />
+    <Compile Include="Assets\Scripts\TaskSystem\TaskManagingSystem.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Lip\SRanipal_Lip_v2.cs" />
     <Compile Include="Assets\Scripts\Menu\StaticGameOptions.cs" />
+    <Compile Include="Assets\Scripts\LevelLoad\StaticLevelManager.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\Sample\SRanipal_GazeRaySample.cs" />
     <Compile Include="Assets\Scripts\Menu\OptionsMenu.cs" />
     <Compile Include="Assets\Scripts\Grabbing\FollowObject.cs" />
@@ -81,17 +85,19 @@
     <Compile Include="Assets\ViveSR\Scripts\Eye\Sample\SRanipal_EyeFocusSample_v2.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Lip\SRanipal_Lip.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\SRanipal_EyeDataType_v2.cs" />
-    <Compile Include="Assets\Scripts\sugarSpoonScript.cs" />
+    <Compile Include="Assets\Scripts\TeaCookingProcess\sugarSpoonScript.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Lip\SRanipal_LipData_v1.cs" />
     <Compile Include="Assets\Scripts\EyeTracking\EyeTrackingSample.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
-    <Compile Include="Assets\Scripts\GenerateHapticFeedbackOnCollision.cs" />
+    <Compile Include="Assets\Scripts\Grabbing\GenerateHapticFeedbackOnCollision.cs" />
     <Compile Include="Assets\Scripts\EyeTracking\SkinnedMeshRendererShape.cs" />
+    <Compile Include="Assets\Scripts\Questionnaires\ScrollThroughScrollView.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Lip\Sample\SRanipal_MirrorCameraSample_Lip.cs" />
     <Compile Include="Assets\Scripts\DataCollection.cs" />
     <Compile Include="Assets\ViveSR\Scripts\SRWorks_Enums.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\SRanipal_Eye.cs" />
     <Compile Include="Assets\Scripts\TeaCookingProcess\StoveButtonScript.cs" />
+    <Compile Include="Assets\Scripts\LevelLoad\ReturnToMainMenu.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\Sample\SRanipal_GazeRaySample_v2.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\Sample\SRanipal_EyeSettingSample.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\Sample\SRanipal_AvatarEyeSample.cs" />
@@ -108,7 +114,6 @@
     <Compile Include="Assets\ViveSR\Scripts\Lip\Sample\SRanipal_AvatarLipSample_v2.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Lip\SRanipal_LipShapeTableDrawer_v2.cs" />
     <Compile Include="Assets\ViveSR\Scripts\Eye\Sample\SRanipal_MirrorCameraSample_Eye.cs" />
-    <Compile Include="Assets\Scripts\ScrollThroughScrollView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

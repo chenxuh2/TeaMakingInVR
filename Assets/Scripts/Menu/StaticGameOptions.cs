@@ -8,6 +8,7 @@ public static class StaticGameOptions
     public static string subjectName = "Enter name";
     public static int sessionNr = 1;
     public static int levelSelected = 0;
+    public static int numberOfTrials = 5;
 
 
     //Options variables (Mostly regarding the car properties)
