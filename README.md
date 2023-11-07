@@ -2,7 +2,8 @@
 
 Requirement: \
 Unity version: 2021.3.0f1 \
-SteamVR 
+SteamVR \
+Vive Console for SteamVR
 
 Package information: \
 Packages (HTC Corporation): \
